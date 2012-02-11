@@ -217,12 +217,16 @@
 [submodule "bundle/vim-autoclose"]
 	path = bundle/vim-autoclose
 	url = git://github.com/Townk/vim-autoclose.git
+  ignore = dirty
 [submodule "bundle/gist-vim"]
 	path = bundle/gist-vim
 	url = git://github.com/mattn/gist-vim.git
+  ignore = dirty
 [submodule "bundle/vim-indexed-search"]
 	path = bundle/vim-indexed-search
 	url = git://github.com/henrik/vim-indexed-search.git
+  ignore = dirty
 [submodule "bundle/vim-repeat"]
 	path = bundle/vim-repeat
 	url = git://github.com/tpope/vim-repeat.git
+  ignore = dirty
