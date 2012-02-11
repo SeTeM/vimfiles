@@ -2,8 +2,11 @@
 " .vimrc klen <horneds@gmail.com>
 " ================================
 
+:runtime! ftplugin/man.vim " Красивый вывод мануала. Должно быть в самом начале
+
 " Setup {{{
 " ======
+
 
     if !exists('s:loaded_my_vimrc')                " don't reset twice on reloading
 
@@ -31,6 +34,8 @@
         call pathogen#helptags()
         filetype plugin indent on
         syntax on
+
+
 
     endif
 
@@ -140,6 +145,7 @@
     "some stuff to get the mouse going in term
     set mouse=a
     set ttymouse=xterm2
+    set ttyfast                         "коннект с терминалом быстрый
 
     "load ftplugins and indent files
     filetype plugin on
@@ -160,6 +166,10 @@
         set foldlevel=999       " High default so folds are shown to start
         set foldcolumn=0        " Колоночка, чтобы показывать плюсики для скрытия блоков кода
     endif
+
+    " Выводим красиво оформленную man-страницу прямо в Vim
+    " в отдельном окне (см. начало этого файла)
+    nmap <C-c>m :exe ":Man " expand("<cword>")<CR>
 
     " X-clipboard support
     if has('unnamedplus')
@@ -185,6 +195,7 @@
 
     set confirm
     set numberwidth=1              " Keep line numbers small if it's shown
+    set autochdir
 
     " Open help in a vsplit rather than a split
     command! -nargs=? -complete=help Help :vertical help <args>
@@ -523,6 +534,14 @@
 
     let mapleader = ","         " set custom map leader to ','
 
+    map <C-g> g<C-g>            " Так получим более полную информацию, чем просто <C-g>
+
+    " Открытие\закрытие новой вкладки
+    imap <C-t>t <Esc>:tabnew<CR>a
+    nmap <C-t>t :tabnew<CR>
+
+
+
     "Command-T configuration
     let g:CommandTMaxHeight=10
     let g:CommandTMatchWindowAtTop=1
@@ -799,14 +818,22 @@
         call rc#Toggle_option("<F6>", "list")      " Переключение подсветки невидимых символов
         call rc#Toggle_option("<F7>", "wrap")      " Переключение переноса слов
 
-        " Close files
-        call rc#Map_ex_cmd("<F10>", "qa")
-        call rc#Map_ex_cmd("<S-F10>", "qa!")
-
         " Session UI
         nnoremap <Leader>ss :call rc#SessionInput('Save')<CR>
         nnoremap <Leader>sr :call rc#SessionInput('Read')<CR>
         nnoremap <Leader>sl :call rc#SessionRead('last')<CR>
+
+        " по звездочке не прыгать на следующее найденное, а просто подсветить
+        nnoremap * *N
+        " в визуальном режиме по команде * подсвечивать выделение
+        vnoremap * y :execute ":let @/=@\""<CR> :execute "set hlsearch"<CR>
+        " Поиск и замена слова под курсором
+        nmap ; :%s/\<<c-r>=expand("<cword>")<cr>\>/
+
+        " < & > - делаем отступы для блоков
+        vmap < <gv
+        vmap > >gv
+
 
         "try to make possible to navigate within lines of wrapped lines
         nmap <Down> gj
@@ -858,6 +885,8 @@
         set guioptions-=l   " remove left-hand scroll bar
 
         set guifont=droid_sans_mono_slashed:h11
+        set antialias       " включить антиаласинг шрифтов
+        set noguipty        " Так не выводятся ненужные escape последовательности в :shell
         set cursorline      " подсвечивать текущую строку
     endif
 
@@ -869,6 +898,75 @@
 if filereadable($HOME . "/.vim_local")
     source $HOME/.vim_local
 endif
+
+" C sittings
+" ================
+    autocmd FileType text setlocal textwidth=80 "устанавливаем ширину в 80 знаков для текстовых файлов
+    au FileType c,cc,h,sh au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%>80v.\+', -1) "Подсвечиваем 81 символ и т.д.
+
+    "При редактировании файла всегда переходить на последнюю известную
+    "позицию курсора. Если позиция ошибочная - не переходим.
+    autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+
+    " Если есть makefile - собираем makeом.
+    " Иначе используем gcc для текущего файла.
+    if filereadable("Makefile")
+        set makeprg=make
+    else
+        set makeprg=gcc\ -Wall\ -o\ %<\ %
+    endif
+
+    " формат строки с ошибкой для gcc и sdcc, это нужно для errormarker
+    let &errorformat="%f:%l:%c: %t%*[^:]:%m,%f:%l: %t%*[^:]:%m," . &errorformat
+
+    " Несколько удобных биндингов для С
+    au FileType c,cc,h inoremap {<CR> {<CR>}<Esc>O
+    au FileType c,cc,h inoremap #m int main(int argc, char * argv[]) {<CR>return 0;<CR>}<CR><Esc>2kO
+    au FileType c,cc,h inoremap #d #define
+    au FileType c,cc,h inoremap #e #endif /*  */<Esc>hhi
+    au FileType c,cc,h inoremap #" #include ""<Esc>i
+    au FileType c,cc,h inoremap #< #include <><Esc>i
+    au FileType c,cc,h inoremap #f /* FIXME:  */<Esc>hhi
+    au FileType c,cc,h inoremap #t /*TODO:  */<Esc>hhi
+    au FileType c,cc,h inoremap ;; <END>;<CR>
+    au FileType c,cc,h inoremap " ""<Left>
+    au FileType c,cc,h inoremap ' ''<Left>
+    au FileType c,cc,h inoremap ( ()<Left>
+    au FileType c,cc,h inoremap [ []<Left>
+    au FileType c,cc,h inoremap (; ();<CR>
+    au FileType c,cc,h inoremap ({ () {<CR>}<Esc>O
+    au FileType c,cc,h inoremap /*<Space> /*  */<Esc>3ha
+
+    " Compile programs using Makefile (and do not jump to first error)
+    au FileType c,cc,h,s imap <C-c>m <Esc>:make!<CR>a
+    au FileType c,cc,h,s nmap <C-c>m :make!<CR>
+
+    " List of errors
+    imap <C-c>l <Esc>:copen<CR>
+    nmap <C-c>l :copen<CR>
+
+    " Необходимо установить для того, чтобы *.h файлам
+    " присваивался тип c, а не cpp.
+    let c_syntax_for_h=""
+
+
+" TagList sittings
+" ================
+    let g:Tlist_Show_One_File=1                         " показывать информацию только по одному файлу
+    let g:Tlist_GainFocus_On_ToggleOpen=1               " получать фокус при открытии
+    let g:Tlist_Compact_Format=1
+    let g:Tlist_Close_On_Select=0                       " не закрывать окно после выбора тега
+    let g:Tlist_Auto_Highlight_Tag=1                    " подсвечивать тег, на котором сейчас находимся
+
+    imap <C-c>t <Esc>:TlistToggle<CR>:TlistUpdate<CR>
+    nmap <C-c>t :TlistToggle<CR>:TlistUpdate<CR>
+
+" ToggleProject sittings
+" ================
+    nmap <silent> <C-c>p <Plug>ToggleProject
 
 
 " Project settings
