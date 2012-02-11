@@ -147,10 +147,6 @@
     set ttymouse=xterm2
     set ttyfast                         "коннект с терминалом быстрый
 
-    "load ftplugins and indent files
-    filetype plugin on
-    filetype indent on
-
     "turn on syntax highlighting
     syntax on
 
