@@ -12,12 +12,12 @@
 
         set nocompatible                           " enable vim features
 
-        set backupdir=$HOME/.cache/vim/backup      " where to put backup file
+        set backupdir=~/.vim/.cache/backup         " where to put backup file
         set backup                                 " make backup file and leave it around
         set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
 
-        set directory=/tmp                         " where to put swap file
-        let g:SESSION_DIR   = $HOME.'/.cache/vim/sessions'
+        set directory=~/.vim/.tmp                         " where to put swap file
+        let g:SESSION_DIR   = '~/.vim/.cache/sessions'
 
         " Create system vim dirs
         if finddir(&backupdir) == ''
@@ -60,7 +60,7 @@
     set winminwidth=0           " minimal window width
 
     "vertical/horizontal scroll off settings
-    set scrolloff=3
+    set scrolloff=6
     set sidescrolloff=7
     set sidescroll=1
 
@@ -86,10 +86,10 @@
     set shiftround              " drop unused spaces
 
     " Backup and swap files
-    set history=400             " history length
+    set history=40000             " history length
     set viminfo+=h              " save history
     set ssop-=blank             " dont save blank vindow
-    set ssop-=options           " dont save options
+    "set ssop-=options           " dont save options
 
     " Search options
     set hlsearch                " Highlight search results
@@ -112,14 +112,14 @@
     set termencoding=utf-8
 
     " Wildmenu
-    set wildmode=full   "make cmdline tab completion similar to bash
+    set wildmode=full           "make cmdline tab completion similar to bash
     set wildmenu                " use wildmenu ...
     set wildcharm=<TAB>
     set wildignore=*.pyc,*.o,*.DS_Store,*~    " ignore file pattern
 
     " ==>StatusLine
     "statusline setup
-    set statusline=%f       "tail of the filename
+    set statusline=%f           "tail of the filename
 
     "Git
     set statusline+=%{fugitive#statusline()}
@@ -127,10 +127,10 @@
     "RVM
     set statusline+=%{exists('g:loaded_rvm')?rvm#statusline():''}
 
-    set statusline+=%=      "left/right separator
-    set statusline+=%c,     "cursor column
-    set statusline+=%l/%L   "cursor line/total lines
-    set statusline+=\ %P    "percent through file
+    set statusline+=%=          "left/right separator
+    set statusline+=%c,         "cursor column
+    set statusline+=%l/%L       "cursor line/total lines
+    set statusline+=\ %P        "percent through file
     set laststatus=2
 
     "recalculate the trailing whitespace warning when idle, and after saving
@@ -151,9 +151,10 @@
     syntax on
 
     " Undo
+    set undofile            " enable persistent undo
+    " added test line
     if has('persistent_undo')
-        set undofile            " enable persistent undo
-        set undodir=/tmp/       " store undofiles in a tmp dir
+        set undodir=~/.vim/.tmp/       " store undofiles in a tmp dir
     endif
 
     " Folding
@@ -183,7 +184,7 @@
     "let g:solarized_termtrans = 1
     "color solarized
 
-    colorscheme desertEx
+    colorscheme railscasts2
 
     " Edit
     set backspace=indent,eol,start " Allow backspace to remove indents, newlines and old tex"
@@ -557,8 +558,6 @@
     map <A-j> :cnext<CR>
     map <A-k> :cprevious<CR>
 
-    "key mapping for Gundo
-    nnoremap <F4> :GundoToggle<CR>
 
     "snipmate setup
     try
@@ -616,8 +615,8 @@
 
     " Tagbar
     let g:tagbar_width = 30
-    let g:tagbar_foldlevel = 0
-    autocmd VimEnter * nested TagbarOpen
+    let g:tagbar_foldlevel = 1
+    " autocmd VimEnter * nested TagbarOpen " open at start
 
     " XPTemplates
     let g:xptemplate_key = '<Tab>'
@@ -941,8 +940,8 @@ endif
     au FileType c,cc,h,s nmap <C-c>m :make!<CR>
 
     " List of errors
-    imap <C-c>l <Esc>:copen<CR>
-    nmap <C-c>l :copen<CR>
+    au FileType c,cc,h imap <C-c>l <Esc>:copen<CR>
+    au FileType c,cc,h nmap <C-c>l :copen<CR>
 
     " Необходимо установить для того, чтобы *.h файлам
     " присваивался тип c, а не cpp.
@@ -963,6 +962,14 @@ endif
 " ToggleProject sittings
 " ================
     nmap <silent> <C-c>p <Plug>ToggleProject
+
+" Gundo sittings
+" ================
+    nnoremap <C-c>u :GundoToggle<CR>
+    let g:gundo_preview_bottom=1 " распологать часть снизу
+    let g:gundo_width = 30
+    let g:gundo_preview_height=15
+
 
 
 " Project settings

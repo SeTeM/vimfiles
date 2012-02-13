@@ -16,3 +16,5 @@ tags
 *.[t]bz2
 tmp/
 log/
+.tmp/
+.cache/
