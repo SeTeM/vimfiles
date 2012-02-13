@@ -35,8 +35,6 @@
         filetype plugin indent on
         syntax on
 
-
-
     endif
 
 " }}}
@@ -112,7 +110,7 @@
     set termencoding=utf-8
 
     " Wildmenu
-    set wildmode=full           "make cmdline tab completion similar to bash
+    set wildmode=list:longest,full           "make cmdline tab completion similar to bash
     set wildmenu                " use wildmenu ...
     set wildcharm=<TAB>
     set wildignore=*.pyc,*.o,*.DS_Store,*~    " ignore file pattern
