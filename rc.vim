@@ -16,7 +16,7 @@
         set backup                                 " make backup file and leave it around
         set backupskip+=svn-commit.tmp,svn-commit.[0-9]*.tmp
 
-        set directory=~/.vim/.tmp                         " where to put swap file
+        set directory=~/.vim/.cache/tmp                         " where to put swap file
         let g:SESSION_DIR   = '~/.vim/.cache/sessions'
 
         " Create system vim dirs
@@ -69,7 +69,7 @@
     set infercase
     set cmdheight=1             " высота строки команд
     set number                  " нумерация строк
-    set showbreak=...
+    set showbreak=→
     set wrap linebreak nolist
     set ruler                   " показывать положение курсора всё время
 
@@ -152,7 +152,7 @@
     set undofile            " enable persistent undo
     " added test line
     if has('persistent_undo')
-        set undodir=~/.vim/.tmp/       " store undofiles in a tmp dir
+        set undodir=~/.vim/.cache/tmp/       " store undofiles in a tmp dir
     endif
 
     " Folding
@@ -894,8 +894,8 @@ endif
 
 " C sittings
 " ================
-    autocmd FileType text setlocal textwidth=80 "устанавливаем ширину в 80 знаков для текстовых файлов
-    au FileType c,cc,h,sh au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%>80v.\+', -1) "Подсвечиваем 81 символ и т.д.
+    "autocmd FileType text setlocal textwidth=80 "устанавливаем ширину в 80 знаков для текстовых файлов
+    "au FileType c,cc,h,sh au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%>80v.\+', -1) "Подсвечиваем 81 символ и т.д.
 
     "При редактировании файла всегда переходить на последнюю известную
     "позицию курсора. Если позиция ошибочная - не переходим.
