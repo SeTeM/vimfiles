@@ -73,12 +73,13 @@
     set wrap linebreak nolist
     set ruler                   " показывать положение курсора всё время
 
-    " Tab options
-    set autoindent              " copy indent from previous line
+    " indent settings
     set cindent
     set smartindent             " enable nice indent
-    set expandtab               " tab with spaces
     set smarttab                " indent using shiftwidth"
+    set tabstop=4
+    set expandtab               " tab with spaces
+    set autoindent              " copy indent from previous line
     set shiftwidth=4            " number of spaces to use for each step of indent
     set softtabstop=4           " tab like 4 spaces
     set shiftround              " drop unused spaces
