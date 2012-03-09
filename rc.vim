@@ -510,11 +510,8 @@
 
             " Filetypes {{{
             " ---------
-
                 au BufNewFile,BufRead *.json setf javascript
-
             " }}}
-
 
         augroup END
 
@@ -525,7 +522,6 @@
 
 " Plugins setup {{{
 " ==============
-
 
     let mapleader = ","         " set custom map leader to ','
 
@@ -705,6 +701,7 @@
         noremap k gk
 
         " Toggle paste mode
+        set paste
         noremap <silent> ,p :set invpaste<CR>:set paste?<CR>
 
         " Not jump on star, only highlight
@@ -826,7 +823,6 @@
         vmap < <gv
         vmap > >gv
 
-
         "try to make possible to navigate within lines of wrapped lines
         nmap <Down> gj
         nmap <Up> gk
@@ -880,6 +876,8 @@
         set antialias       " включить антиаласинг шрифтов
         set noguipty        " Так не выводятся ненужные escape последовательности в :shell
         set cursorline      " подсвечивать текущую строку
+
+        let macvim_hig_shift_movement = 1 " выделение текста с помощью shift и стрелок
     endif
 
 " }}}
