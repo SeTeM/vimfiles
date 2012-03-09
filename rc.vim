@@ -58,7 +58,7 @@
     set winminwidth=0           " minimal window width
 
     "vertical/horizontal scroll off settings
-    set scrolloff=6
+    set scrolloff=3
     set sidescrolloff=7
     set sidescroll=1
 
@@ -531,12 +531,6 @@
 
     map <C-g> g<C-g>            " Так получим более полную информацию, чем просто <C-g>
 
-    " Открытие\закрытие новой вкладки
-    imap <C-t>t <Esc>:tabnew<CR>a
-    nmap <C-t>t :tabnew<CR>
-
-
-
     "Command-T configuration
     let g:CommandTMaxHeight=10
     let g:CommandTMatchWindowAtTop=1
@@ -683,7 +677,6 @@
     menu G.Log :Glog<CR>
     menu G.Blame :Gblame<CR>
 
-
 " }}}
 
 
@@ -727,11 +720,12 @@
         noremap <space> za
 
         " Fast scrool
-        nnoremap <C-e> 3<C-e>
-        nnoremap <C-y> 3<C-y>
+        nnoremap <S-J> 5j
+        nnoremap <S-K> 5k
 
         " Select all
         map vA ggVG
+        map <D-a> ggVG
 
         " Если забыл перед открытием sudo
         cmap w!! %!sudo tee > /dev/null %
@@ -770,27 +764,32 @@
         nnoremap <silent> ,gw :call rc#RGrep()<CR>
 
         " Open new tab
-        call rc#Map_ex_cmd("<C-W>t", ":tabnew")
+        "call rc#Map_ex_cmd("<C-W>t", ":tabnew")
 
         " Tab navigation
-        map <A-1> 1gt
-        map <A-2> 2gt
-        map <A-3> 3gt
-        map <A-4> 4gt
-        map <A-5> 5gt
-        map <A-6> 6gt
-        map <A-7> 7gt
-        map <A-8> 8gt
-        map <A-9> 9gt
+        nmap <D-1> 1gt
+        nmap <D-2> 2gt
+        nmap <D-3> 3gt
+        nmap <D-4> 4gt
+        nmap <D-5> 5gt
+        nmap <D-6> 6gt
+        nmap <D-7> 7gt
+        nmap <D-8> 8gt
+        nmap <D-9> 9gt
+        nmap <D-t> <ESC>:tabnew<CR>
+        nmap <D-Right> <ESC>:tabnext<CR>
+        nmap <D-Left> <ESC>:tabprev<CR>
+        nmap <D-UP> <ESC>:tabfirst<CR>
+        nmap <D-DOWN> <ESC>:tablast<CR>
 
         " первая вкладка
-        call rc#Map_ex_cmd("<A-UP>", ":tabfirst")
+        "call rc#Map_ex_cmd("<A-UP>", ":tabfirst")
         " последняя вкладка
-        call rc#Map_ex_cmd("<A-DOWN>", ":tablast")
+        "call rc#Map_ex_cmd("<A-DOWN>", ":tablast")
         " переместить вкладку в начало
-        nmap Q :tabmove 0<cr>
+        "nmap Q :tabmove 0<cr>
         " переместить вкладку в конец
-        call rc#Map_ex_cmd("<C-DOWN>", ":tabmove")
+        "call rc#Map_ex_cmd("<C-DOWN>", ":tabmove")
 
         " Keymap switch <C-F>
         cnoremap <silent> <C-F> <C-^>
@@ -917,7 +916,7 @@ endif
 
     " Несколько удобных биндингов для С
     au FileType c,cc,h inoremap {<CR> {<CR>}<Esc>O
-    au FileType c,cc,h inoremap #m int main(int argc, char * argv[]) {<CR>return 0;<CR>}<CR><Esc>2kO
+    au FileType c,cc,h inoremap #m int main(void)<CR>{<CR>return 0;<CR>}<CR><Esc>2kO
     au FileType c,cc,h inoremap #d #define
     au FileType c,cc,h inoremap #e #endif /*  */<Esc>hhi
     au FileType c,cc,h inoremap #" #include ""<Esc>i
