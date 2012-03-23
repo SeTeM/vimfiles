@@ -197,6 +197,9 @@
     command! -nargs=? -complete=help Help :vertical help <args>
     cabbrev h h<C-\>esubstitute(getcmdline(), '^h\>', 'Help', '')<CR>
 
+    " NASM settings
+    au BufRead,BufNewFile *.asm	 set filetype=nasm
+
 " }}}
 
 " Functions {{{
@@ -648,12 +651,6 @@
     let g:erlangCompletionGrep="zgrep"
     let g:erlangManSuffix="erl\.gz"
 
-    " Pymode
-    let g:pymode_lint_jump = 1
-    let g:pymode_rope_goto_def_newwin = 1
-    let g:pymode_syntax_builtin_objs = 0
-    let g:pymode_syntax_builtin_funcs = 0
-
     " Fugitive
     nnoremap <leader>gs :Gstatus<CR>
     nnoremap <leader>ga :Gwrite<CR>
@@ -878,7 +875,7 @@
         set noguipty        " Так не выводятся ненужные escape последовательности в :shell
         set cursorline      " подсвечивать текущую строку
 
-        let macvim_hig_shift_movement = 1 " выделение текста с помощью shift и стрелок
+        "let macvim_hig_shift_movement = 1 " выделение текста с помощью shift и стрелок
     endif
 
 " }}}
@@ -966,7 +963,19 @@ endif
     let g:gundo_width = 30
     let g:gundo_preview_height=15
 
+" Python syntax
+let python_highlight_all=1
+setlocal keywordprg=pydoc
+autocmd FileType python let g:pydiction_location ='~/.vim/ftplugin/pydiction/complete-dict'
 
+" Django templates
+au! BufNewFile,BufRead *.html set filetype=htmldjango
+
+" Omnicomplit
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
 " Project settings
 " ================
