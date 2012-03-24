@@ -93719,3 +93719,16 @@ formatter.get_bool_opt(
 formatter.get_style_by_name(
 
 --- from pygments.formatter import * ---
+
+--- import django ---
+django.VERSION
+django.__builtins__
+django.__doc__
+django.__file__
+django.__name__
+django.__package__
+django.__path__
+django.get_version(
+
+--- from django import * ---
+get_version(
