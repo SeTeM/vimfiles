@@ -156,6 +156,10 @@
         set undodir=~/.vim/.cache/tmp/       " store undofiles in a tmp dir
     endif
 
+    " Copy-Paste
+    vmap <D-c> "+y
+    map <D-v> "+gP
+
     " Folding
     if has('folding')
         set foldmethod=indent   " Fold on marker
@@ -973,19 +977,12 @@ autocmd FileType python let g:pydiction_location ='~/.vim/bundle/pydiction/ftplu
 au! BufNewFile,BufRead *.html set filetype=htmldjango
 
 " Omnicomplit
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+"autocmd FileType python set omnifunc=pythoncomplete#Complete
+"autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
-" Project settings
-" ================
-
-    " enables the reading of .vimrc, .exrc and .gvimrc in the current directory.
-    set exrc
-
-    " must be written at the last.  see :help 'secure'.
-    set secure
+" Bundles
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
@@ -1047,3 +1044,14 @@ Bundle 'Townk/vim-autoclose'
 Bundle 'mattn/gist-vim'
 Bundle 'henrik/vim-indexed-search'
 Bundle 'tpope/vim-repeat'
+
+
+" Project settings
+" ================
+
+    " enables the reading of .vimrc, .exrc and .gvimrc in the current directory.
+    set exrc
+
+    " must be written at the last.  see :help 'secure'.
+    set secure
+
